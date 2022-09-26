@@ -39,13 +39,13 @@ export default function App() {
         setLetrasEscolhidas([...letrasEscolhidas, l])
         console.log(palavraEscolhida)
         if (palavraEscolhida.includes(l)) {
-            let palavra = []
-            for (let i=0; i<letrasEscolhidas.length; i++) {
-                if (palavraEscolhida.includes(letrasEscolhidas[i])) {
-                    palavra.push(letrasEscolhidas[i])
+            let palavra = [...palavraEscondida]
+            for (let i=0; i<palavraEscolhida.length; i++) {
+                if (palavraEscolhida[i] === l) {
+                    palavra[i] = l
+                    setPalavraEscondida(palavra)
                 }
             }
-            setPalavraEscondida(palavra.map(letra => letra))
         } else {
             setErros(erros + 1)
         }
