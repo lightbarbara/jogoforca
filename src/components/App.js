@@ -5,7 +5,7 @@ import alfabeto from './alfabeto'
 import React from "react"
 
 function Imagem(props) {
-    return <img src={`assets/forca${props.erros}.png`} />
+    return <img data-identifier='game-image' src={`assets/forca${props.erros}.png`} />
 }
 
 export default function App() {
@@ -57,18 +57,18 @@ export default function App() {
             <Visual>
                 <Imagem erros={erros} />
                 <Palavra palavraEscolhida={palavraEscolhida} palavraEscondida={palavraEscondida} erros={erros}>
-                    <Escolha onClick={escolherPalavra}>Escolher Palavra</Escolha>
-                    {palavraEscondida.length > 0 ? <p>{palavraEscondida}</p> : ''}
+                    <Escolha data-identifier='choose-word' onClick={escolherPalavra}>Escolher Palavra</Escolha>
+                    {palavraEscondida.length > 0 ? <p data-identifier='word'>{palavraEscondida}</p> : ''}
                 </Palavra>
             </Visual>
             <Acertos>
                 <Alfabeto>
-                    {alfabeto.map(l => <LetraStyle disabled={letrasEscolhidas.includes(l) || palavraEscolhida.length === 0 || erros === 6 || (palavraEscolhida.join() === palavraEscondida.join() && erros < 6) ? true : false} onClick={() => escolherLetra(l, palavraEscolhida)} palavraEscolhida={palavraEscolhida}><p>{l.toUpperCase()}</p></LetraStyle>)}
+                    {alfabeto.map(l => <LetraStyle data-identifier='letter' disabled={letrasEscolhidas.includes(l) || palavraEscolhida.length === 0 || erros === 6 || (palavraEscolhida.join() === palavraEscondida.join() && erros < 6) ? true : false} onClick={() => escolherLetra(l, palavraEscolhida)} palavraEscolhida={palavraEscolhida}><p>{l.toUpperCase()}</p></LetraStyle>)}
                 </Alfabeto>
                 <Chute>
                     <span>Já sei a palavra!</span>
-                    <input disabled={palavraEscolhida.length === 0 || erros === 6 || (palavraEscolhida.join() === palavraEscondida.join() && erros < 6) ? true : false} onChange={e => setPalavraChutada(e.target.value.split(''))}/>
-                    <button onClick={checaPalavraChutada}>Chutar</button>
+                    <input data-identifier='type-guess' disabled={palavraEscolhida.length === 0 || erros === 6 || (palavraEscolhida.join() === palavraEscondida.join() && erros < 6) ? true : false} onChange={e => setPalavraChutada(e.target.value.split(''))}/>
+                    <button data-identifier='guess-button' onClick={checaPalavraChutada}>Chutar</button>
                 </Chute>
             </Acertos>
         </Wrapper>
