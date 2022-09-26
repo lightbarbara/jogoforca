@@ -24,13 +24,25 @@ export default function App() {
         setPalavraEscondida(palavra.map(l => ' _ '))
     }
 
+    function normaliza(text) {
+        let newText = [...text].join('')
+        newText = newText.replace(new RegExp('[áàâã]','gi'), 'a');
+        newText = newText.replace(new RegExp('[éèê]','gi'), 'e');
+        newText = newText.replace(new RegExp('[íìî]','gi'), 'i');
+        newText = newText.replace(new RegExp('[óòôõ]','gi'), 'o');
+        newText = newText.replace(new RegExp('[úùû]','gi'), 'u');
+        newText = newText.replace(new RegExp('[ç]','gi'), 'c');
+        return newText;                 
+    }
+
     function escolherLetra(l) {
         setLetrasEscolhidas([...letrasEscolhidas, l])
-        if (palavraEscolhida.includes(l)) {
+        const palavraInteira = normaliza([...palavraEscolhida].join(''))
+        if ((palavraInteira).includes(l)) {
             let palavra = [...palavraEscondida]
             for (let i=0; i<palavraEscolhida.length; i++) {
-                if (palavraEscolhida[i] === l) {
-                    palavra[i] = l
+                if (palavraInteira[i] === l) {
+                    palavra[i] = palavraEscolhida[i]
                     setPalavraEscondida(palavra)
                 }
             }
@@ -43,7 +55,7 @@ export default function App() {
     }
 
     function checaPalavraChutada() {
-        if (palavraEscolhida.join() === palavraChutada.join()) {
+        if (palavraEscolhida.join('') === palavraChutada.join('')) {
             setPalavraEscondida(palavraChutada)
         } else {
             setErros(6)
@@ -63,11 +75,11 @@ export default function App() {
             </Visual>
             <Acertos>
                 <Alfabeto>
-                    {alfabeto.map(l => <LetraStyle data-identifier='letter' disabled={letrasEscolhidas.includes(l) || palavraEscolhida.length === 0 || erros === 6 || (palavraEscolhida.join() === palavraEscondida.join() && erros < 6) ? true : false} onClick={() => escolherLetra(l, palavraEscolhida)} palavraEscolhida={palavraEscolhida}><p>{l.toUpperCase()}</p></LetraStyle>)}
+                    {alfabeto.map(l => <LetraStyle data-identifier='letter' disabled={letrasEscolhidas.includes(l) || palavraEscolhida.length === 0 || erros === 6 || (palavraEscolhida.join('') === palavraEscondida.join('') && erros < 6) ? true : false} onClick={() => escolherLetra(l, palavraEscolhida)} palavraEscolhida={palavraEscolhida}><p>{l.toUpperCase()}</p></LetraStyle>)}
                 </Alfabeto>
                 <Chute>
                     <span>Já sei a palavra!</span>
-                    <input data-identifier='type-guess' disabled={palavraEscolhida.length === 0 || erros === 6 || (palavraEscolhida.join() === palavraEscondida.join() && erros < 6) ? true : false} onChange={e => setPalavraChutada(e.target.value.split(''))}/>
+                    <input data-identifier='type-guess' disabled={palavraEscolhida.length === 0 || erros === 6 || (palavraEscolhida.join('') === palavraEscondida.join('') && erros < 6) ? true : false} onChange={e => setPalavraChutada(e.target.value.split(''))}/>
                     <button data-identifier='guess-button' onClick={checaPalavraChutada}>Chutar</button>
                 </Chute>
             </Acertos>
@@ -109,7 +121,7 @@ display: flex;
 flex-direction: column;
 justify-content: space-between;
 padding-bottom: 20px;
-color: ${props => (props.palavraEscolhida.join() === props.palavraEscondida.join() && props.erros < 6) ? '#27AE60' : props.erros === 6 ? 'red' : 'black'};
+color: ${props => (props.palavraEscolhida.join('') === props.palavraEscondida.join('') && props.erros < 6) ? '#27AE60' : props.erros === 6 ? 'red' : 'black'};
 font-weight: 700;
 
 p {
